@@ -42,9 +42,9 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{studentId}/batches/{batchId}")
-    public ResponseEntity<Void> assignBatch(@PathVariable Long studentId, @PathVariable Long batchId) {
-        studentService.assignBatch(studentId, batchId);
+    @PostMapping("/{studentId}/badges/{badgeId}")
+    public ResponseEntity<Void> assignBadge(@PathVariable Long studentId, @PathVariable Long badgeId) {
+        studentService.assignBadge(studentId, badgeId);
         return ResponseEntity.ok().build();
     }
 
@@ -53,9 +53,9 @@ public class StudentController {
         return ResponseEntity.ok(studentService.calculateStudentAverage(id));
     }
 
-    @PostMapping("/{id}/auto-assign-batch")
-    public ResponseEntity<Void> autoAssignBatch(@PathVariable Long id) {
-        studentService.autoAssignBatchBasedOnPerformance(id);
+    @PostMapping("/{id}/auto-assign-badge")
+    public ResponseEntity<Void> autoAssignBadge(@PathVariable Long id) {
+        studentService.autoAssignBadgeBasedOnPerformance(id);
         return ResponseEntity.ok().build();
     }
 }

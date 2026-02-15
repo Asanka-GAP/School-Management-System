@@ -1,9 +1,9 @@
 package com.school.service;
 
 import com.school.dto.TeacherDTO;
-import com.school.entity.Batch;
+import com.school.entity.Badge;
 import com.school.entity.Teacher;
-import com.school.repository.BatchRepository;
+import com.school.repository.BadgeRepository;
 import com.school.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class TeacherService {
 
     private final TeacherRepository teacherRepository;
-    private final BatchRepository batchRepository;
+    private final BadgeRepository badgeRepository;
 
     @Transactional
     public TeacherDTO create(TeacherDTO dto) {
@@ -60,14 +60,14 @@ public class TeacherService {
     }
 
     @Transactional
-    public void assignBatch(Long teacherId, Long batchId) {
+    public void assignBadge(Long teacherId, Long badgeId) {
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
-        Batch batch = batchRepository.findById(batchId)
-                .orElseThrow(() -> new RuntimeException("Batch not found"));
+        Badge badge = badgeRepository.findById(badgeId)
+                .orElseThrow(() -> new RuntimeException("Badge not found"));
         
-        if (!teacher.getBatches().contains(batch)) {
-            teacher.getBatches().add(batch);
+        if (!teacher.getBadges().contains(badge)) {
+            teacher.getBadges().add(badge);
             teacherRepository.save(teacher);
         }
     }

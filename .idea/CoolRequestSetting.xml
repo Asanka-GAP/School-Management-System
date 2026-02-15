@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CoolRequestSetting">
+    <option name="serializePaths">
+      <list>
+        <option value="C:\Users\HP\.config\.cool-request\request\serialize\6a8f0cf292e441c986dba0dd79da0ede" />
+      </list>
+    </option>
     <option name="projectCachePath" value="project-9cd8d31a-1434-464c-86c1-6419508d6d57" />
   </component>
 </project>

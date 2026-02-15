@@ -51,12 +51,12 @@ public class Student {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "student_batch",
+        name = "student_badge",
         joinColumns = @JoinColumn(name = "student_id"),
-        inverseJoinColumns = @JoinColumn(name = "batch_id")
+        inverseJoinColumns = @JoinColumn(name = "badge_id")
     )
     @Builder.Default
-    private List<Batch> batches = new ArrayList<>();
+    private List<Badge> badges = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

@@ -2,7 +2,7 @@ package com.school.service;
 
 import com.school.dto.*;
 import com.school.entity.*;
-import com.school.enums.BatchType;
+import com.school.enums.BadgeType;
 import com.school.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
-    private final BatchRepository batchRepository;
+    private final BadgeRepository badgeRepository;
     private final MarkRepository markRepository;
 
     @Transactional
@@ -81,14 +81,14 @@ public class StudentService {
     }
 
     @Transactional
-    public void assignBatch(Long studentId, Long batchId) {
+    public void assignBadge(Long studentId, Long badgeId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
-        Batch batch = batchRepository.findById(batchId)
-                .orElseThrow(() -> new RuntimeException("Batch not found"));
+        Badge badge = badgeRepository.findById(badgeId)
+                .orElseThrow(() -> new RuntimeException("Badge not found"));
         
-        if (!student.getBatches().contains(batch)) {
-            student.getBatches().add(batch);
+        if (!student.getBadges().contains(badge)) {
+            student.getBadges().add(badge);
             studentRepository.save(student);
         }
     }
@@ -108,18 +108,18 @@ public class StudentService {
     }
 
     @Transactional
-    public void autoAssignBatchBasedOnPerformance(Long studentId) {
+    public void autoAssignBadgeBasedOnPerformance(Long studentId) {
         BigDecimal average = calculateStudentAverage(studentId);
         
         if (average.compareTo(BigDecimal.valueOf(90)) > 0) {
-            List<Batch> yearWiseBatches = batchRepository.findByType(BatchType.YEAR_WISE);
-            if (!yearWiseBatches.isEmpty()) {
-                assignBatch(studentId, yearWiseBatches.get(0).getId());
+            List<Badge> yearWiseBadges = badgeRepository.findByType(BadgeType.YEAR_WISE);
+            if (!yearWiseBadges.isEmpty()) {
+                assignBadge(studentId, yearWiseBadges.get(0).getId());
             }
         } else if (average.compareTo(BigDecimal.valueOf(85)) > 0) {
-            List<Batch> subjectWiseBatches = batchRepository.findByType(BatchType.SUBJECT_WISE);
-            if (!subjectWiseBatches.isEmpty()) {
-                assignBatch(studentId, subjectWiseBatches.get(0).getId());
+            List<Badge> subjectWiseBadges = badgeRepository.findByType(BadgeType.SUBJECT_WISE);
+            if (!subjectWiseBadges.isEmpty()) {
+                assignBadge(studentId, subjectWiseBadges.get(0).getId());
             }
         }
     }

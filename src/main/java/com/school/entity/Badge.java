@@ -1,6 +1,6 @@
 package com.school.entity;
 
-import com.school.enums.BatchType;
+import com.school.enums.BadgeType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "batch")
+@Table(name = "badge")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Batch {
+public class Badge {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Batch {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private BatchType type;
+    private BadgeType type;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -33,11 +33,11 @@ public class Batch {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany(mappedBy = "batches", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "badges", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Student> students = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "batches", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "badges", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Teacher> teachers = new ArrayList<>();
 

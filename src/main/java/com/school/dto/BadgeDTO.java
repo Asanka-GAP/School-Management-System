@@ -1,6 +1,6 @@
 package com.school.dto;
 
-import com.school.enums.BatchType;
+import com.school.enums.BadgeType;
 import lombok.*;
 
 @Getter
@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BatchDTO {
+public class BadgeDTO {
     private Long id;
     private String name;
-    private BatchType type;
+    private BadgeType type;
     private String description;
 }

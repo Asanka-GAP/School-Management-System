@@ -41,9 +41,9 @@ public class TeacherController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{teacherId}/batches/{batchId}")
-    public ResponseEntity<Void> assignBatch(@PathVariable Long teacherId, @PathVariable Long batchId) {
-        teacherService.assignBatch(teacherId, batchId);
+    @PostMapping("/{teacherId}/badges/{badgeId}")
+    public ResponseEntity<Void> assignBadge(@PathVariable Long teacherId, @PathVariable Long badgeId) {
+        teacherService.assignBadge(teacherId, badgeId);
         return ResponseEntity.ok().build();
     }
 }

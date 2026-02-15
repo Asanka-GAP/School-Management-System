@@ -1,12 +1,12 @@
 package com.school.repository;
 
-import com.school.entity.Batch;
-import com.school.enums.BatchType;
+import com.school.entity.Badge;
+import com.school.enums.BadgeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BatchRepository extends JpaRepository<Batch, Long> {
-    List<Batch> findByType(BatchType type);
+public interface BadgeRepository extends JpaRepository<Badge, Long> {
+    List<Badge> findByType(BadgeType type);
 }
