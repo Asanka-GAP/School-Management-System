@@ -1,5 +1,6 @@
 package com.school.controller;
 
+import com.school.annotation.LogApi;
 import com.school.dto.StudentDTO;
 import com.school.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -16,43 +17,51 @@ public class StudentController {
 
     private final StudentService studentService;
 
+    @LogApi
     @PostMapping
     public ResponseEntity<StudentDTO> create(@RequestBody StudentDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.create(dto));
     }
 
+    @LogApi
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getById(id));
     }
 
+    @LogApi
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAll() {
         return ResponseEntity.ok(studentService.getAll());
     }
 
+    @LogApi
     @PutMapping("/{id}")
     public ResponseEntity<StudentDTO> update(@PathVariable Long id, @RequestBody StudentDTO dto) {
         return ResponseEntity.ok(studentService.update(id, dto));
     }
 
+    @LogApi
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         studentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @LogApi
     @PostMapping("/{studentId}/badges/{badgeId}")
     public ResponseEntity<Void> assignBadge(@PathVariable Long studentId, @PathVariable Long badgeId) {
         studentService.assignBadge(studentId, badgeId);
         return ResponseEntity.ok().build();
     }
 
+    @LogApi
     @GetMapping("/{id}/average")
     public ResponseEntity<BigDecimal> getAverage(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.calculateStudentAverage(id));
     }
 
+    @LogApi
     @PostMapping("/{id}/auto-assign-badge")
     public ResponseEntity<Void> autoAssignBadge(@PathVariable Long id) {
         studentService.autoAssignBadgeBasedOnPerformance(id);

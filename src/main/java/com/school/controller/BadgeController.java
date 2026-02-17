@@ -1,5 +1,6 @@
 package com.school.controller;
 
+import com.school.annotation.LogApi;
 import com.school.dto.BadgeDTO;
 import com.school.enums.BadgeType;
 import com.school.service.BadgeService;
@@ -16,31 +17,37 @@ public class BadgeController {
 
     private final BadgeService badgeService;
 
+    @LogApi
     @PostMapping
     public ResponseEntity<BadgeDTO> create(@RequestBody BadgeDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(badgeService.create(dto));
     }
 
+    @LogApi
     @GetMapping("/{id}")
     public ResponseEntity<BadgeDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(badgeService.getById(id));
     }
 
+    @LogApi
     @GetMapping
     public ResponseEntity<List<BadgeDTO>> getAll() {
         return ResponseEntity.ok(badgeService.getAll());
     }
 
+    @LogApi
     @GetMapping("/type/{type}")
     public ResponseEntity<List<BadgeDTO>> getByType(@PathVariable BadgeType type) {
         return ResponseEntity.ok(badgeService.getByType(type));
     }
 
+    @LogApi
     @PutMapping("/{id}")
     public ResponseEntity<BadgeDTO> update(@PathVariable Long id, @RequestBody BadgeDTO dto) {
         return ResponseEntity.ok(badgeService.update(id, dto));
     }
 
+    @LogApi
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         badgeService.delete(id);
