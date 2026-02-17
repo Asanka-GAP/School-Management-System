@@ -1,12 +1,12 @@
 package com.school.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.school.util.LogUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class LogApiAspect {
 
-    private static final Logger log = LogUtil.getLog(LogApiAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(LogApiAspect.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Around("@annotation(com.school.annotation.LogApi)")
