@@ -13,7 +13,6 @@ public class LessonScheduleDTO {
     private Long id;
     private Long teacherId;
     private Long subjectId;
-    private Long badgeId;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;

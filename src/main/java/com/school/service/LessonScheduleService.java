@@ -17,7 +17,6 @@ public class LessonScheduleService {
     private final LessonScheduleRepository scheduleRepository;
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
-    private final BadgeRepository badgeRepository;
 
     @Transactional
     public LessonScheduleDTO create(LessonScheduleDTO dto) {
@@ -35,12 +34,6 @@ public class LessonScheduleService {
                 .classRoom(dto.getClassRoom())
                 .isActive(dto.getIsActive() != null ? dto.getIsActive() : true)
                 .build();
-        
-        if (dto.getBadgeId() != null) {
-            Badge badge = badgeRepository.findById(dto.getBadgeId())
-                    .orElseThrow(() -> new RuntimeException("Badge not found"));
-            schedule.setBadge(badge);
-        }
         
         return toDTO(scheduleRepository.save(schedule));
     }
@@ -97,12 +90,6 @@ public class LessonScheduleService {
             schedule.setSubject(subject);
         }
         
-        if (dto.getBadgeId() != null) {
-            Badge badge = badgeRepository.findById(dto.getBadgeId())
-                    .orElseThrow(() -> new RuntimeException("Badge not found"));
-            schedule.setBadge(badge);
-        }
-        
         schedule.setDayOfWeek(dto.getDayOfWeek());
         schedule.setStartTime(dto.getStartTime());
         schedule.setEndTime(dto.getEndTime());
@@ -122,7 +109,6 @@ public class LessonScheduleService {
                 .id(schedule.getId())
                 .teacherId(schedule.getTeacher().getId())
                 .subjectId(schedule.getSubject().getId())
-                .badgeId(schedule.getBadge() != null ? schedule.getBadge().getId() : null)
                 .dayOfWeek(schedule.getDayOfWeek())
                 .startTime(schedule.getStartTime())
                 .endTime(schedule.getEndTime())
