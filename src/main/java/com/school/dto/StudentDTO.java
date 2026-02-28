@@ -1,5 +1,6 @@
 package com.school.dto;
 
+import com.school.enums.Gender;
 import lombok.*;
 import java.time.LocalDate;
 
@@ -16,5 +17,6 @@ public class StudentDTO {
     private LocalDate dateOfBirth;
     private LocalDate admissionDate;
     private String status;
+    private Gender gender;
     private Long parentId;
 }

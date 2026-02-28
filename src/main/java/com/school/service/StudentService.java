@@ -3,6 +3,7 @@ package com.school.service;
 import com.school.dto.*;
 import com.school.entity.*;
 import com.school.enums.BadgeType;
+import com.school.enums.Gender;
 import com.school.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class StudentService {
                 .dateOfBirth(dto.getDateOfBirth())
                 .admissionDate(dto.getAdmissionDate())
                 .status(dto.getStatus())
+                .gender(dto.getGender())
                 .build();
         
         if (dto.getParentId() != null) {
@@ -54,6 +56,18 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<StudentDTO> getByGender(Gender gender) {
+        return studentRepository.findByGender(gender).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Long countByGender(Gender gender) {
+        return studentRepository.countByGender(gender);
+    }
+
     @Transactional
     public StudentDTO update(Long id, StudentDTO dto) {
         Student student = studentRepository.findById(id)
@@ -65,6 +79,7 @@ public class StudentService {
         student.setDateOfBirth(dto.getDateOfBirth());
         student.setAdmissionDate(dto.getAdmissionDate());
         student.setStatus(dto.getStatus());
+        student.setGender(dto.getGender());
         
         if (dto.getParentId() != null) {
             Parent parent = parentRepository.findById(dto.getParentId())
@@ -133,6 +148,7 @@ public class StudentService {
                 .dateOfBirth(student.getDateOfBirth())
                 .admissionDate(student.getAdmissionDate())
                 .status(student.getStatus())
+                .gender(student.getGender())
                 .parentId(student.getParent() != null ? student.getParent().getId() : null)
                 .build();
     }

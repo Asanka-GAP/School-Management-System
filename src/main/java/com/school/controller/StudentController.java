@@ -2,6 +2,7 @@ package com.school.controller;
 
 import com.school.annotation.LogApi;
 import com.school.dto.StudentDTO;
+import com.school.enums.Gender;
 import com.school.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,16 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAll() {
         return ResponseEntity.ok(studentService.getAll());
+    }
+
+    @GetMapping("/gender/{gender}")
+    public ResponseEntity<List<StudentDTO>> getByGender(@PathVariable Gender gender) {
+        return ResponseEntity.ok(studentService.getByGender(gender));
+    }
+
+    @GetMapping("/count/gender/{gender}")
+    public ResponseEntity<Long> countByGender(@PathVariable Gender gender) {
+        return ResponseEntity.ok(studentService.countByGender(gender));
     }
 
     @LogApi

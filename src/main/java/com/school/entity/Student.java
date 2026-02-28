@@ -1,5 +1,6 @@
 package com.school.entity;
 
+import com.school.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -37,6 +38,10 @@ public class Student {
 
     @Column(length = 20)
     private String status = "ACTIVE";
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private Gender gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")

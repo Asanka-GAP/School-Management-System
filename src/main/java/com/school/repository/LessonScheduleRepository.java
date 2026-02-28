@@ -11,6 +11,5 @@ public interface LessonScheduleRepository extends JpaRepository<LessonSchedule, 
     List<LessonSchedule> findByTeacherId(Long teacherId);
     List<LessonSchedule> findByDayOfWeek(DayOfWeek dayOfWeek);
     List<LessonSchedule> findByTeacherIdAndDayOfWeek(Long teacherId, DayOfWeek dayOfWeek);
-    List<LessonSchedule> findByBadgeId(Long badgeId);
     List<LessonSchedule> findByIsActive(Boolean isActive);
 }
