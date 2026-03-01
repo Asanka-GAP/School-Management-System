@@ -18,13 +18,13 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final ParentRepository parentRepository;
+    private final SchoolClassRepository classRepository;
     private final BadgeRepository badgeRepository;
     private final MarkRepository markRepository;
 
     @Transactional
     public StudentDTO create(StudentDTO dto) {
         Student student = Student.builder()
-                .admissionNumber(dto.getAdmissionNumber())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .dateOfBirth(dto.getDateOfBirth())
@@ -39,7 +39,16 @@ public class StudentService {
             student.setParent(parent);
         }
         
-        return toDTO(studentRepository.save(student));
+        if (dto.getClassId() != null) {
+            SchoolClass schoolClass = classRepository.findById(dto.getClassId())
+                    .orElseThrow(() -> new RuntimeException("Class not found"));
+            student.setSchoolClass(schoolClass);
+        }
+        
+        Student savedStudent = studentRepository.save(student);
+        savedStudent.setAdmissionNumber(String.valueOf(savedStudent.getId()));
+        
+        return toDTO(studentRepository.save(savedStudent));
     }
 
     @Transactional(readOnly = true)
@@ -73,7 +82,6 @@ public class StudentService {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
         
-        student.setAdmissionNumber(dto.getAdmissionNumber());
         student.setFirstName(dto.getFirstName());
         student.setLastName(dto.getLastName());
         student.setDateOfBirth(dto.getDateOfBirth());
@@ -85,6 +93,12 @@ public class StudentService {
             Parent parent = parentRepository.findById(dto.getParentId())
                     .orElseThrow(() -> new RuntimeException("Parent not found"));
             student.setParent(parent);
+        }
+        
+        if (dto.getClassId() != null) {
+            SchoolClass schoolClass = classRepository.findById(dto.getClassId())
+                    .orElseThrow(() -> new RuntimeException("Class not found"));
+            student.setSchoolClass(schoolClass);
         }
         
         return toDTO(studentRepository.save(student));
@@ -150,6 +164,8 @@ public class StudentService {
                 .status(student.getStatus())
                 .gender(student.getGender())
                 .parentId(student.getParent() != null ? student.getParent().getId() : null)
+                .classId(student.getSchoolClass() != null ? student.getSchoolClass().getId() : null)
+                .className(student.getSchoolClass() != null ? student.getSchoolClass().getClassName() : null)
                 .build();
     }
 }

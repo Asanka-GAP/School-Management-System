@@ -27,4 +27,8 @@ public class Subject {
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Mark> marks = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Teacher> teachers = new ArrayList<>();
 }

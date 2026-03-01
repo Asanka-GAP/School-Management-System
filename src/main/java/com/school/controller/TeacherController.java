@@ -60,4 +60,10 @@ public class TeacherController {
         teacherService.assignBadge(teacherId, badgeId);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{teacherId}/subjects/{subjectId}")
+    public ResponseEntity<Void> assignSubject(@PathVariable Long teacherId, @PathVariable Long subjectId) {
+        teacherService.assignSubject(teacherId, subjectId);
+        return ResponseEntity.ok().build();
+    }
 }

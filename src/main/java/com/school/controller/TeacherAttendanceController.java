@@ -28,6 +28,12 @@ public class TeacherAttendanceController {
     private final TeacherAttendanceService attendanceService;
 
     @LogApi
+    @GetMapping("/teacher/{teacherId}/percentage")
+    public ResponseEntity<Double> getAttendancePercentage(@PathVariable Long teacherId) {
+        return ResponseEntity.ok(attendanceService.getAttendancePercentage(teacherId));
+    }
+
+    @LogApi
     @PostMapping
     public ResponseEntity<TeacherAttendanceDTO> create(@RequestBody TeacherAttendanceDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(attendanceService.create(dto));

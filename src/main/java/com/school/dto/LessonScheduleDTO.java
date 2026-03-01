@@ -12,7 +12,9 @@ import java.time.LocalTime;
 public class LessonScheduleDTO {
     private Long id;
     private Long teacherId;
+    private String teacherName;
     private Long subjectId;
+    private String subjectName;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;

@@ -21,7 +21,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "admission_number", nullable = false, unique = true, length = 50)
+    @Column(name = "admission_number", unique = true, length = 50)
     private String admissionNumber;
 
     @Column(name = "first_name", nullable = false, length = 100)
@@ -46,6 +46,10 @@ public class Student {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Parent parent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private SchoolClass schoolClass;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

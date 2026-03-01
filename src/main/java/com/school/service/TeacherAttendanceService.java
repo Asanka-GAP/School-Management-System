@@ -118,4 +118,23 @@ public class TeacherAttendanceService {
                 .remarks(attendance.getRemarks())
                 .build();
     }
+
+    @Transactional(readOnly = true)
+    public Double getAttendancePercentage(Long teacherId) {
+        LocalDate startDate = LocalDate.now().minusMonths(1);
+        LocalDate endDate = LocalDate.now();
+        
+        long totalWeekdays = startDate.datesUntil(endDate.plusDays(1))
+                .filter(date -> date.getDayOfWeek().getValue() <= 5)
+                .count();
+        
+        if (totalWeekdays == 0) return 0.0;
+        
+        long presentDays = attendanceRepository.findByTeacherIdAndAttendanceDateBetween(teacherId, startDate, endDate)
+                .stream()
+                .filter(a -> a.getStatus() == AttendanceStatus.PRESENT)
+                .count();
+        
+        return Math.round((presentDays * 100.0 / totalWeekdays) * 100.0) / 100.0;
+    }
 }

@@ -19,4 +19,6 @@ public class StudentDTO {
     private String status;
     private Gender gender;
     private Long parentId;
+    private Long classId;
+    private String className;
 }

@@ -1,6 +1,7 @@
 package com.school.dto;
 
 import lombok.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,5 +13,6 @@ public class TeacherDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String specialization;
+    private List<Long> subjectIds;
+    private Boolean isSupervisor;
 }

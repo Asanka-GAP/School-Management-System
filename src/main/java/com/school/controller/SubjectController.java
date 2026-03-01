@@ -2,6 +2,7 @@ package com.school.controller;
 
 import com.school.annotation.LogApi;
 import com.school.dto.SubjectDTO;
+import com.school.dto.TeacherDTO;
 import com.school.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,11 @@ public class SubjectController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         subjectService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @LogApi
+    @GetMapping("/{id}/teachers")
+    public ResponseEntity<List<TeacherDTO>> getTeachersBySubject(@PathVariable Long id) {
+        return ResponseEntity.ok(subjectService.getTeachersBySubject(id));
     }
 }

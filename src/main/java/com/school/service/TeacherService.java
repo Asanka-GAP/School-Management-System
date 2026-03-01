@@ -2,8 +2,10 @@ package com.school.service;
 
 import com.school.dto.TeacherDTO;
 import com.school.entity.Badge;
+import com.school.entity.Subject;
 import com.school.entity.Teacher;
 import com.school.repository.BadgeRepository;
+import com.school.repository.SubjectRepository;
 import com.school.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,15 +19,26 @@ public class TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final BadgeRepository badgeRepository;
+    private final SubjectRepository subjectRepository;
 
     @Transactional
     public TeacherDTO create(TeacherDTO dto) {
+        if (dto.getSubjectIds() == null || dto.getSubjectIds().isEmpty()) {
+            throw new RuntimeException("At least one subject must be assigned to teacher");
+        }
+        
         Teacher teacher = Teacher.builder()
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .email(dto.getEmail())
-                .specialization(dto.getSpecialization())
                 .build();
+        
+        for (Long subjectId : dto.getSubjectIds()) {
+            Subject subject = subjectRepository.findById(subjectId)
+                    .orElseThrow(() -> new RuntimeException("Subject not found: " + subjectId));
+            teacher.getSubjects().add(subject);
+        }
+        
         return toDTO(teacherRepository.save(teacher));
     }
 
@@ -45,18 +58,42 @@ public class TeacherService {
 
     @Transactional
     public TeacherDTO update(Long id, TeacherDTO dto) {
+        if (dto.getSubjectIds() == null || dto.getSubjectIds().isEmpty()) {
+            throw new RuntimeException("At least one subject must be assigned to teacher");
+        }
+        
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
         teacher.setFirstName(dto.getFirstName());
         teacher.setLastName(dto.getLastName());
         teacher.setEmail(dto.getEmail());
-        teacher.setSpecialization(dto.getSpecialization());
+        
+        teacher.getSubjects().clear();
+        for (Long subjectId : dto.getSubjectIds()) {
+            Subject subject = subjectRepository.findById(subjectId)
+                    .orElseThrow(() -> new RuntimeException("Subject not found: " + subjectId));
+            teacher.getSubjects().add(subject);
+        }
+        
         return toDTO(teacherRepository.save(teacher));
     }
 
     @Transactional
     public void delete(Long id) {
         teacherRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void assignSubject(Long teacherId, Long subjectId) {
+        Teacher teacher = teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
+        
+        if (!teacher.getSubjects().contains(subject)) {
+            teacher.getSubjects().add(subject);
+            teacherRepository.save(teacher);
+        }
     }
 
     @Transactional
@@ -78,7 +115,10 @@ public class TeacherService {
                 .firstName(teacher.getFirstName())
                 .lastName(teacher.getLastName())
                 .email(teacher.getEmail())
-                .specialization(teacher.getSpecialization())
+                .isSupervisor(teacher.getIsSupervisor())
+                .subjectIds(teacher.getSubjects().stream()
+                        .map(Subject::getId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

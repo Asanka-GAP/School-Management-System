@@ -28,8 +28,8 @@ public class Teacher {
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(length = 100)
-    private String specialization;
+    @Column(name = "is_supervisor")
+    private Boolean isSupervisor = false;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -42,6 +42,15 @@ public class Teacher {
     )
     @Builder.Default
     private List<Badge> badges = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "teacher_subject",
+        joinColumns = @JoinColumn(name = "teacher_id"),
+        inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    @Builder.Default
+    private List<Subject> subjects = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
